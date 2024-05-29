@@ -1,0 +1,66 @@
+﻿@model Paginate<CategoryProductVM>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Categories</h2>
+    <div class="create-operation">
+        <a asp-action="Create" class="btn btn-success text-white btn-sm"><i class="mdi mdi-plus"></i></a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped" id="categories-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Created date</th>
+                    <th>Products count</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Datas)
+                {
+                    <tr class="category-data">
+                        <td class="py-1">@item.CategoryName</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@item.ProductCount</td>
+                        <td>
+                            <a class="btn btn-primary text-white btn-sm"><i class="mdi mdi-information-variant"></i></a>
+                            <a class="btn btn-warning text-white btn-sm" asp-action="Edit" asp-route-id="@item.Id"><i class="mdi mdi-grease-pencil"></i></a>
+                            <button class="btn btn-danger text-white btn-sm delete-category" data-id="@item.Id"><i class="mdi mdi-delete"></i></button>
+                            <button class="btn btn-secondary text-white btn-sm add-archive" data-id="@item.Id"><i class="mdi mdi-archive"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-area d-flex justify-content-center mt-3">
+        <nav aria-label="...">
+            <ul class="pagination" id="pagination-container">
+                <li class="page-item @(Model.HasPrevious ? "" : "disabled")">
+                    <a class="page-link" href="javascript:void(0)" data-page="@(Model.CurrentPage - 1)" tabindex="-1">Previous</a>
+                </li>
+                @for (int i = 1; i <= Model.TotalPage; i++)
+                {
+                    <li class="page-item @(Model.CurrentPage == i ? "disabled" : "")"><a class="page-link @(Model.CurrentPage == i ? "paginate-active" : "")" href="javascript:void(0)" data-page="@i">@i</a></li>
+                }
+                <li class="page-item @(Model.HasNext ? "" : "disabled")">
+                    <a class="page-link" href="javascript:void(0)" data-page="@(Model.CurrentPage + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section js {
+    <script src="~/js/categoryProductPagination.js"></script>
+    <script>
+        $(document).on("click", "#pagination-container .page-link", function () {
+            let page = $(this).data("page");
+            loadPage('/Admin/Category/GetCategories', 'categories-table', page);
+        });
+    </script>
+}
