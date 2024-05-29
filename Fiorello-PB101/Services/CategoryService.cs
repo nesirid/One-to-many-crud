@@ -2,6 +2,7 @@
 using Fiorello_PB101.Models;
 using Fiorello_PB101.Services.Interfaces;
 using Fiorello_PB101.ViewModels.Categories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fiorello_PB101.Services
@@ -56,6 +57,14 @@ namespace Fiorello_PB101.Services
         {
             return await _context.Categories.ToListAsync();
         }
+
+        public async Task<SelectList> GetAllSelectedAsync()
+        {
+            var categories = await _context.Categories.ToListAsync();
+             
+            return new SelectList(categories, "Id", "Name");
+        }
+        
 
         public async Task<IEnumerable<CategoryProductVM>> GetAllWithProductCountAsync()
         {

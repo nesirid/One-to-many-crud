@@ -1,5 +1,6 @@
 ﻿using Fiorello_PB101.Models;
 using Fiorello_PB101.ViewModels.Categories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Fiorello_PB101.Services.Interfaces
 {
@@ -13,5 +14,6 @@ namespace Fiorello_PB101.Services.Interfaces
         Task DeleteAsync(Category category);
         Task<bool> ExistExceptByIdAsync(int id, string name);
         Task<IEnumerable<CategoryArchiveVM>> GetAllArchiveAsync();
+        Task<SelectList> GetAllSelectedAsync(); 
     }
 }

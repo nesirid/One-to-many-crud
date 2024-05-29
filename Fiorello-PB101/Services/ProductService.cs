@@ -2,9 +2,7 @@
 using Fiorello_PB101.Models;
 using Fiorello_PB101.Services.Interfaces;
 using Fiorello_PB101.ViewModels.Products;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Fiorello_PB101.Services
 {
@@ -30,7 +28,7 @@ namespace Fiorello_PB101.Services
                                           .Include(m => m.ProductImages)
                                           .Skip((page - 1) * take)
                                           .Take(take)
-                                          .ToListAsync(); ;
+                                          .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetAllWithImagesAsync()
@@ -65,10 +63,14 @@ namespace Fiorello_PB101.Services
                 CategoryName = m.Category.Name,
                 Price = m.Price,
                 Description = m.Description,
-                MainImage = m.ProductImages?.FirstOrDefault(m=>m.IsMain)?.Name
+                MainImage = m.ProductImages?.FirstOrDefault(m => m.IsMain)?.Name
             });
         }
 
-
+        public async Task UpdateAsync(Product product)
+        {
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+        }
     }
 }

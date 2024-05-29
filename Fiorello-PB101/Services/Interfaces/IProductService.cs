@@ -13,5 +13,6 @@ namespace Fiorello_PB101.Services.Interfaces
         Task<IEnumerable<Product>> GetAllPaginateAsync(int page, int take);
         IEnumerable<ProductVM> GetMappedDatas(IEnumerable<Product> products);
         Task<int> GetCountAsync();
+        Task UpdateAsync(Product product);
     }
 }
