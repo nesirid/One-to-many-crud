@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "J2n7l3sUDcjViixvh3tHx3RJv9HuZWrtfAUNocifLs0=",
+  "Hash": "gi4+39FspiZ3KzXHb0Bo81NWzX9XB1WMumgCQL+cb98=",
   "Source": "Fiorello-PB101",
   "BasePath": "_content/Fiorello-PB101",
   "Mode": "Default",
@@ -2846,25 +2846,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\shop-13-img.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\user\\Desktop\\For Programing Education\\BACKEND\\Task-PB101\\Fiorello-PB101\\wwwroot\\img\\shop-14-img.jpg",
-      "SourceId": "Fiorello-PB101",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\user\\Desktop\\For Programing Education\\BACKEND\\Task-PB101\\Fiorello-PB101\\wwwroot\\",
-      "BasePath": "_content/Fiorello-PB101",
-      "RelativePath": "img/shop-14-img.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\img\\shop-14-img.jpg"
     },
     {
       "Identity": "C:\\Users\\user\\Desktop\\For Programing Education\\BACKEND\\Task-PB101\\Fiorello-PB101\\wwwroot\\img\\shop-7-img.jpg",

@@ -1,4 +1,5 @@
 ﻿using Fiorello_PB101.Helpers;
+using Fiorello_PB101.Models;
 using Fiorello_PB101.Services;
 using Fiorello_PB101.Services.Interfaces;
 using Fiorello_PB101.ViewModels.Products;
@@ -106,7 +107,7 @@ namespace Fiorello_PB101.Areas.Admin.Controllers
         {
             if (id == null) return BadRequest();
 
-            var product = await _productService.GetByIdAsync((int)id);
+            var product = await _productService.GetByIdWithAllDatasAsync((int)id);
             if (product == null) return NotFound();
 
             var productVM = new ProductEditVM
@@ -116,6 +117,8 @@ namespace Fiorello_PB101.Areas.Admin.Controllers
                 Description = product.Description,
                 Price = product.Price,
                 CategoryId = product.CategoryId,
+                ExistingImages = product.ProductImages.Select(img => new ImageVM { Id = img.Id, Name = img.Name, IsMain = img.IsMain }).ToList(),
+                MainImageId = product.ProductImages.FirstOrDefault(img => img.IsMain)?.Id
             };
 
             ViewBag.categories = await _categoryService.GetAllSelectedAsync();
@@ -129,14 +132,56 @@ namespace Fiorello_PB101.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var product = await _productService.GetByIdAsync(id);
+                var product = await _productService.GetByIdWithAllDatasAsync(id);
                 if (product == null) return NotFound();
 
                 product.Name = model.Name;
                 product.Description = model.Description;
                 product.Price = model.Price;
                 product.CategoryId = model.CategoryId;
-                
+
+                if (model.NewImages != null && model.NewImages.Any())
+                {
+                    foreach (var file in model.NewImages)
+                    {
+                        var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", file.FileName);
+                        using (var stream = new FileStream(imagePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        product.ProductImages.Add(new ProductImage
+                        {
+                            Name = file.FileName,
+                            IsMain = false 
+                        });
+                    }
+                }
+
+                if (model.ImagesToDelete != null && model.ImagesToDelete.Any())
+                {
+                    foreach (var imageId in model.ImagesToDelete)
+                    {
+                        var image = product.ProductImages.FirstOrDefault(img => img.Id == imageId);
+                        if (image != null)
+                        {
+                            var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", image.Name);
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                            product.ProductImages.Remove(image);
+                        }
+                    }
+                }
+
+                if (model.MainImageId.HasValue)
+                {
+                    foreach (var image in product.ProductImages)
+                    {
+                        image.IsMain = image.Id == model.MainImageId.Value;
+                    }
+                }
 
                 await _productService.UpdateAsync(product);
                 return RedirectToAction("Index");
@@ -145,5 +190,7 @@ namespace Fiorello_PB101.Areas.Admin.Controllers
             ViewBag.categories = await _categoryService.GetAllSelectedAsync();
             return View(model);
         }
+
+
     }
 }
